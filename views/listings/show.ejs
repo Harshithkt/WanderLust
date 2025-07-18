@@ -1,0 +1,60 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row mt-2">
+  <div class="col-8 offset-2 mt-3">
+  <body>
+    <h1>The list you are checking is :</h1>
+  </div>
+
+    <ul>
+      <% for (let x of data){ %>
+        
+   <div class="card col-6 offset-2">
+    
+  <img src="<%= x.image.url %>" class="card-img-top show-img" alt="...">
+  <div class="card-body">
+    <p>
+    <b><%= x.title %></b>
+      
+     
+        <h3>Description:</h3><%= x.description %>
+        <h3>Price:</h3>&#8377 <%= x.price.toLocaleString('en-IN') %>
+        <h3>Location:</h3><%= x.location %>
+        <h3>Country</h3><%= x.country %>
+  
+    </p>
+    
+  <div class="d-flex justify-content-center mt-4 gap-3 flex-wrap">
+  <form action="/listings/<%= x.id %>/edit" method="GET">
+    <button class="btn btn-secondary px-4">
+      ✏️ Edit
+    </button>
+  </form>
+
+  <form action="/listings/<%= x.id %>?_method=DELETE" method="POST">
+    <button class="btn btn-danger px-4">
+      🗑️ Delete
+    </button>
+  </form>
+</div>
+
+  </div>
+</div>
+<!--    
+<div class="row offset-2 col-4">
+      <form action="/listings/<%= x.id %>/edit" method="GET">
+        <button class="btn btn-secondary "">Edit your listings</button>
+      </form>
+      <br>
+
+
+      <form action="/listings/<%= x.id %>?_method=DELETE" method="POST">
+        <button class="btn btn-secondary mt-3 ">Delete this listing</button>
+      </form>
+      </div> -->
+
+
+      <% } %>
+    
+  </body>
+  </div>
+

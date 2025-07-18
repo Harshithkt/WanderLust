@@ -1,0 +1,83 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+  <div class="row">
+    <div class="col-8 offset-2">
+    <h1>Add / List a new property</h1>
+    <form action="/listings" method="POST">
+      <div class="mb-4">
+        <label for="title" class="form-lable">Title</label>
+        <input
+          type="text"
+          name="title"
+          placeholder="Enter your prop title"
+          class="form-control"
+        />
+      </div>
+
+      <div class="mb-4">
+        <label for="description" class="form-lable">Description</label>
+        <input
+          type="text"
+          name="description"
+          placeholder="Enter your prop Desc"
+          class="form-control"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-lable">Image</label>
+        <input
+          type="text"
+          name="image"
+          placeholder="Enter your place url"
+          class="form-control"
+        />
+      </div>
+      <div class="row">
+
+<div class="mb-3 col-4">
+        <label for="price" class="form-lable">Price</label>
+        <input
+          type="number"
+          name="price"
+          id=""
+          placeholder="Enter your prop price"
+          class="form-control"
+        />
+      </div>
+
+      
+      <div class="mb-3 col-8">
+        <label for="country" class="form-lable">Country</label>
+        <input
+          type="text"
+          name="country"
+          placeholder="Enter your country"
+          class="form-control"
+        />
+      </div>
+
+      </div>
+      
+
+      <div class="mb-3">
+        <label for="location" class="form-lable">Location</label>
+        <input
+          type="text"
+          name="location"
+          placeholder="Enter your location"
+          class="form-control"
+        />
+      </div>
+      <br>
+      <br>
+
+      <button>Submit</button>
+
+      <br>
+      <br>
+      <br>
+    </form>
+    </div>
+  </div>
+</body>
