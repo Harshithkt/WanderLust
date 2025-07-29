@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
 const port = 8080;
+const wrapAsync = require('./utils/wrapAsync');
 const mongoose = require("mongoose");
 const path = require("path");
 const Listing = require("./models/listing.js");
 const methodOverride = require("method-override");
 const engine = require("ejs-mate");
+const { wrap } = require("module");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -15,9 +17,6 @@ app.engine("ejs", engine);
 app.use(express.static("public"));
 
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
 
 main()
   .then((res) => {
@@ -49,19 +48,20 @@ app.get("/testListing", (req, res) => {
   res.send("working!!!");
 });
 
-app.get("/listings", async (req, res) => {
+app.get("/listings", wrapAsync( async (req, res) => {
   const allListings = await Listing.find({});
   res.render("listings/index.ejs", { allListings });
-});
+}));
+
 app.get("/listings/new", (req, res) => {
   res.render("listings/new.ejs");
 });
 
-app.get("/listings/:id", async (req, res) => {
+app.get("/listings/:id", wrapAsync( async (req, res) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);
   res.render("listings/show.ejs", { data: [listing] });
-});
+}));
 
 // app.post("/listings",async (req,res)=>{
 //     let x = req.body;
@@ -82,8 +82,8 @@ app.get("/listings/:id", async (req, res) => {
 //      })
 //     res.redirect("/listings");
 // })
-app.post("/listings", async (req, res) => {
-  try {
+app.post("/listings",wrapAsync( async (req, res,next) => {
+
     let x = req.body;
 
     let newListing = new Listing({
@@ -97,29 +97,35 @@ app.post("/listings", async (req, res) => {
 
     await newListing.save();
     res.redirect("/listings");
-  } catch (err) {
-    console.error("Error saving listing:", err);
-    res.status(500).send("Something went wrong");
+  
   }
-});
+));
 
-app.get("/listings/:id/edit", async (req, res) => {
+app.get("/listings/:id/edit", wrapAsync( async (req, res) => {
   let { id } = req.params;
   let listing = await Listing.findById(id);
   res.render("listings/edit.ejs", { listing });
-});
+}));
 
-app.put("/listings/:id", async (req, res) => {
+app.put("/listings/:id", wrapAsync( async (req, res) => {
   let { id } = req.params;
   let updateData = req.body;
 
   console.log(updateData)
   await Listing.findByIdAndUpdate(id, updateData);
   res.redirect(`/listings/${id}`);
-});
+}));
 
-app.delete("/listings/:id", async (req, res) => {
+app.delete("/listings/:id",wrapAsync (async (req, res) => {
   let { id } = req.params;
   await Listing.findByIdAndDelete(id);
   res.redirect("/listings");
+}));
+
+app.use((err,req,res,next)=>{
+  res.send("Something went wrong");
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
